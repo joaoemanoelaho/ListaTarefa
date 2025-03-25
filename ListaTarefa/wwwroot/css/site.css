@@ -13,10 +13,10 @@ body {
 } */
 
 .altura-main {
-  height: calc(40px - 100vh);
+  height: calc(60px - 100vh);
 }
 
-.backgroud-input-pesquisar {
+.fundo-cinza-escuro {
   background-color: #d9e0eb70;
 }
 
@@ -45,9 +45,11 @@ input[type="checkbox"]:checked {
 
 .container {
   width: 1328px;
+  height: calc(100vh - 60px);
+  margin: auto;
 }
 
-.backgroud-cor-vermelha {
+.fundo-cor-vermelha {
   background-color: #d40606;
 }
 
@@ -58,6 +60,24 @@ input[type="checkbox"]:checked {
 .botao-lixeira {
   border: 0;
   background-color: transparent;
-  color: #204E9D;
+  color: #204e9d;
   cursor: pointer;
+}
+
+.corpo-tabela {
+  height: 342px;
+  overflow-y: scroll;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+tbody tr {
+  height: 30px !important;
+  min-height: 30px;
+}
+tbody tr td {
+  line-height: 30px;
+  overflow: hidden;
 }

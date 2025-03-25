@@ -104,5 +104,5 @@ C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\a62adomtpm-b
 C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\n0t5hxjni7-dpontn6zs1.gz
 C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\n6n9zrxhv4-9mf64wxuwb.gz
 C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\lzlfwob666-bao9u7vqie.gz
-C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\fdjclr2ie8-n9f7xtm8bu.gz
 C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\ssmjvdkofh-z905bzze1s.gz
+C:\repositorios\ListaTarefa\ListaTarefa\obj\Debug\net9.0\compressed\fdjclr2ie8-cipnuw7zet.gz

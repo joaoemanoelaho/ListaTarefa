@@ -2,69 +2,82 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center container">
-    <form class="uk-flex container uk-flex-between">
-        <div class="uk-flex">
-            <div class="uk-flex uk-flex-middle uk-margin-right">
-                <div class="uk-inline">
-                    <span class="uk-form-icon" uk-search-icon></span>
-                    <input class="uk-input backgroud-input-pesquisar" type="text" aria-label="Not clickable icon"
-                        placeholder="Pesquisar tarefas...">
-                </div>
-            </div>
-            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid checkbox-filtro">
-                <label><input class="uk-checkbox" type="checkbox"> Urgente</label>
-                <label><input class="uk-checkbox" type="checkbox"> Pendente</label>
-            </div>
-        </div>
-
-        <p uk-margin>
-            <button class="uk-button cor-texto-branco uk-button-small fundo-azul-escuro" type="button"
-                uk-toggle="target: #modal-adicionar-tarefa">Nova Tarefa</button>
-        </p>
-
-        <div id="modal-adicionar-tarefa" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-                <h2 class="uk-modal-title">Criar Tarefa</h2>
-                <div class="uk-flex">
-                    <label for="#nome-tarefa">Tarefa</label>
-                    <input type="text" name="nome-tarefa" placeholder="Insira a tarefa">
-                </div>
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                    <button class="uk-button uk-button-primary" type="button">Salvar</button>
-                </p>
-            </div>
-        </div>
-    </form>
-
-    <table class="uk-table uk-table-middle uk-table-divider">
-        <thead>
-            <tr>
-                <th class="uk-width-medium">Table Heading</th>
-                <th class="uk-text-center uk-width-medium">Data Vencimento</th>
-                <th class="uk-text-center uk-width-medium">Urgente</th>
-                <th class="uk-width-medium"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label> Analisar
-                    Viabilidade do Projeto
-                </td>
-                <td class="uk-text-center">25/03/2025
-                </td>
-                <td>
-                    <div class="uk-text-center"><span class="uk-badge backgroud-cor-vermelha">Não</span></div>
-                </td>
-                <td>
-                    <div class="uk-text-right "><button class="botao-lixeira" type="button" uk-icon="trash"></button>
+<div class="text-center">
+    <div class="container uk-flex uk-flex-center uk-flex-column">
+        <form class="uk-flex uk-flex-between">
+            <div class="uk-flex">
+                <div class="uk-flex uk-flex-middle uk-margin-right">
+                    <div class="uk-inline">
+                        <span class="uk-form-icon" uk-search-icon></span>
+                        <input class="uk-input fundo-cinza-escuro" type="text" aria-label="Not clickable icon"
+                            placeholder="Pesquisar tarefas...">
                     </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+                <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid checkbox-filtro">
+                    <label><input class="uk-checkbox" type="checkbox"> Urgente</label>
+                    <label><input class="uk-checkbox" type="checkbox"> Pendente</label>
+                </div>
+            </div>
+            <p uk-margin>
+                <button class="uk-button cor-texto-branco uk-button-small fundo-azul-escuro" type="button"
+                    uk-toggle="target: #modal-adicionar-tarefa">Nova Tarefa</button>
+            </p>
 
-
+            <div id="modal-adicionar-tarefa" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-4">
+                    <h2 class="uk-modal-title uk-text-bold">Criar Tarefa</h2>
+                    <div class="uk-margin ">
+                        <label class="uk-form-label" for="form-horizontal-text">Tarefa</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input fundo-cinza-escuro" id="form-horizontal-text" type="text" placeholder="Insira a tarefa">
+                        </div>
+                    </div>
+                    <div class="uk-margin ">
+                        <label class="uk-form-label" for="form-horizontal-text">Data de Vencimento</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input fundo-cinza-escuro" id="form-horizontal-text" type="text"
+                                placeholder="Insira a Data de Vencimento">
+                        </div>
+                    </div>
+                    <p class="uk-text-right" uk-margin>
+                        <button class="uk-button uk-button-default uk-modal-close uk-button-small"
+                            type="button">Cancelar</button>
+                        <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
+                            type="button">Salvar</button>
+                    </p>
+                </div>
+            </div>
+        </form>
+        <div style="height:500px; overflow-y:scroll; display: block;">
+            <table class="uk-table uk-table-middle uk-table-divider maximo-tabela">
+                <thead>
+                    <tr>
+                        <th class="uk-width-medium">Tarefa</th>
+                        <th class="uk-text-center uk-width-medium">Data Vencimento</th>
+                        <th class="uk-text-center uk-width-medium">Urgente</th>
+                        <th class="uk-width-medium"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label>
+                            Analisar
+                            Viabilidade do Projeto
+                        </td>
+                        <td class="uk-text-center">25/03/2025
+                        </td>
+                        <td>
+                            <div class="uk-text-center"><span class="uk-badge fundo-cor-vermelha">Não</span></div>
+                        </td>
+                        <td>
+                            <div class="uk-text-right "><button class="botao-lixeira" type="button"
+                                    uk-icon="trash"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
