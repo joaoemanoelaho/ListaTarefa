@@ -1,16 +1,18 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ListaTarefa.Models;
+using ListaTarefa.Repository;
 
 namespace ListaTarefa.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    private readonly TarefaRepository _tarefaRepository;
+ 
+    public HomeController(TarefaRepository tarefaRepository)
     {
-        _logger = logger;
+        _tarefaRepository = tarefaRepository;
     }
 
     public IActionResult Index()
@@ -28,6 +30,7 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
 
 }
 
