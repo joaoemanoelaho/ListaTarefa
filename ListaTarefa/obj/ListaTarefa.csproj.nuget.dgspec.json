@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj": {}
+    "C:\\repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj": {}
   },
   "projects": {
-    "C:\\Repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj": {
+    "C:\\repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj",
+        "projectUniqueName": "C:\\repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj",
         "projectName": "ListaTarefa",
-        "projectPath": "C:\\Repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj",
-        "packagesPath": "C:\\Users\\filme\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\ListaTarefa\\ListaTarefa\\obj\\",
+        "projectPath": "C:\\repositorios\\ListaTarefa\\ListaTarefa\\ListaTarefa.csproj",
+        "packagesPath": "C:\\Users\\SMN - João Emanoel\\.nuget\\packages\\",
+        "outputPath": "C:\\repositorios\\ListaTarefa\\ListaTarefa\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\filme\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\SMN - João Emanoel\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

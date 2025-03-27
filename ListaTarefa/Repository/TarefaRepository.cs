@@ -35,5 +35,15 @@ namespace ListaTarefa.Repository
         {
             return await _context.Tarefas.FindAsync(id);
         }
+
+         public async Task Delete(int id)
+        {
+            var equipe = await _context.Tarefas.FindAsync(id);
+            if (equipe != null)
+            {
+            _context.Tarefas.Remove(equipe);
+            await _context.SaveChangesAsync();
+            }
+        }
     }
 }

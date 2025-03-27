@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<TarefaRepository>();
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -1,10 +1,11 @@
-﻿@{
+﻿@model IEnumerable<Tarefa>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <div class="container uk-flex uk-flex-center uk-flex-column">
-        <form class="uk-flex uk-flex-between" method="post" action="@Url.Action("Create", "Home")">
+        <form class="uk-flex uk-flex-between">
             <div class="uk-flex">
                 <div class="uk-flex uk-flex-middle uk-margin-right">
                     <div class="uk-inline">
@@ -44,7 +45,7 @@
                         <button class="uk-button uk-button-default uk-modal-close uk-button-small"
                             type="button">Cancelar</button>
                         <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
-                            type="submit">Salvar</button>
+                            onclick="cadastrar()" type="submit">Salvar</button>
                     </p>
                 </div>
             </div>
@@ -61,25 +62,77 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label>
-                            Analisar
-                            Viabilidade do Projeto
-                        </td>
-                        <td class="uk-text-center">25/03/2025
-                        </td>
-                        <td>
-                            <div class="uk-text-center"><span class="uk-badge fundo-cor-vermelha">Não</span></div>
-                        </td>
-                        <td>
-                            <div class="uk-text-right "><button class="botao-lixeira" type="button"
-                                    uk-icon="trash"></button>
-                            </div>
-                        </td>
-                    </tr>
+                    @if (@Model != null && @Model.Any())
+                    {
+                        foreach (var tarefa in @Model)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label>
+                                   @tarefa.Descricao
+                                </td>
+                                <td class="uk-text-center">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @{
+                                        var totalDias = (int)(DateTime.Now - @tarefa.DataVencimento.Value).TotalDays;
+                                    }
+                                    <div class="uk-text-center"><span class="uk-badge @(totalDias <= 2 ? "uk-label-danger" : "")">@(totalDias <= 2 ? "Sim" : "Não")</span></div>
+                                </td>
+                                <td>
+                                    <div class="uk-text-right "><button class="botao-lixeira excluir" data-id="@tarefa.Id" type="button"
+                                            uk-icon="trash"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    function cadastrar() {
+        var descricao = $('#descricao').val();
+        var dataVencimento = $('#dataVencimento').val();
+
+        const obj = {
+            descricao,
+            dataVencimento
+        }
+
+        $.post('@Url.Action("Create", "Home")', obj)
+            .done(function () {
+                console.log('@Url.Action("Create", "Home")')
+                window.location.href = '@Url.Action("Index", "Home")';
+            })
+            .fail(function () {
+                UIkit.notification({
+                    message: 'Erro ao cadastrar time!',
+                    status: 'danger',
+                    pos: 'top-center',
+                    timeout: 1500,
+                });
+            });
+    }
+
+    $(document).ready(function () {
+        $('.excluir').click(function () {
+            var botaoClicado = $(this);
+            var id = $(this).data('id');
+            var linha = $(this).closest('tr');
+
+            $.post('@Url.Action("Delete", "Home")', {
+                Id: id
+            }).done(function () {
+                linha.remove();
+                window.location.reload();
+            }).fail(function () {
+                alert('Erro ao excluir time!');
+            });
+        });
+    });
+</script>
