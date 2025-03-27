@@ -33,36 +33,16 @@ public class HomeController : Controller
     public async Task<IActionResult> Create(string descricao, DateTime dataVencimento)
     {
 
-        System.Diagnostics.Debug.WriteLine("Ação Create chamada com: descricao = " + descricao + ", dataVencimento = " + dataVencimento);
-
-        if (string.IsNullOrEmpty(descricao) || dataVencimento == default(DateTime))
-        {
-            return BadRequest("Dados inválidos.");
-        }
-
-        var data = dataVencimento.ToString("dd/MM/yyyy");
-        DateTime.TryParse(data, out DateTime dataConvertida);
-
-        var dataAtual = DateTime.Now.ToString("dd/MM/yyyy");
-        DateTime.TryParse(data, out DateTime dataAtualConvertida);
-
-        if (dataConvertida < dataAtualConvertida)
-        {
-            return BadRequest("Data inválida");
-        }
-
         var tarefas = await _tarefaRepository.GetAllTarefas();
 
         foreach (var tarefa in tarefas)
         {
             if (descricao == tarefa.Descricao)
             {
-                return BadRequest("Nome inválido");
+                return BadRequest("Dados inválidos.");
 
             }
         }
-
-
 
         var novaTarefa = new Tarefa
         {

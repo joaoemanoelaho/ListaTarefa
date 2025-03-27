@@ -69,7 +69,7 @@
                             <tr>
                                 <td>
                                     <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label>
-                                   @tarefa.Descricao
+                                    @tarefa.Descricao
                                 </td>
                                 <td class="uk-text-center">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
                                 </td>
@@ -77,15 +77,17 @@
                                     @{
                                         var totalDias = (int)(DateTime.Now - @tarefa.DataVencimento.Value).TotalDays;
                                     }
-                                    <div class="uk-text-center"><span class="uk-badge @(totalDias <= 2 ? "uk-label-danger" : "")">@(totalDias <= 2 ? "Sim" : "Não")</span></div>
-                                </td>
-                                <td>
-                                    <div class="uk-text-right "><button class="botao-lixeira excluir" data-id="@tarefa.Id" type="button"
-                                            uk-icon="trash"></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
+                                    <div class="uk-text-center"><span
+                                            class="uk-badge @(totalDias <= 2 ? "uk-label-danger" : "")">@(totalDias <= 2 ? "Sim"
+                                                                                : "Não")</span></div>
+                        </td>
+                        <td>
+                            <div class="uk-text-right "><button class="botao-lixeira excluir" data-id="@tarefa.Id"
+                                    type="button" uk-icon="trash"></button>
+                            </div>
+                        </td>
+                    </tr>
+                                        }
                     }
 
                 </tbody>
@@ -95,6 +97,15 @@
 </div>
 
 <script>
+
+    function dataFormatada(d) {
+        var data = new Date(d),
+            dia = data.getDate().toString().padStart(2, '0'),
+            mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+            ano = data.getFullYear();
+        return [ano, mes, dia].join('-');
+    }
+
     function cadastrar() {
         var descricao = $('#descricao').val();
         var dataVencimento = $('#dataVencimento').val();
@@ -104,9 +115,25 @@
             dataVencimento
         }
 
+        const date = Date.now();
+        console.log(dataFormatada(date), dataVencimento)
+
+        if (dataVencimento < dataFormatada(date)) {
+            UIkit.notification({
+                message: 'Erro: data inválida!',
+                status: 'danger',
+                pos: 'top-center',
+                timeout: 1500,
+            });
+            return;
+        }
+
+        foreach(var tarefa in tarefa) {
+
+        }
+
         $.post('@Url.Action("Create", "Home")', obj)
             .done(function () {
-                console.log('@Url.Action("Create", "Home")')
                 window.location.href = '@Url.Action("Index", "Home")';
             })
             .fail(function () {
