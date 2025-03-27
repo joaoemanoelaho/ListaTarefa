@@ -4,7 +4,7 @@
 
 <div class="text-center">
     <div class="container uk-flex uk-flex-center uk-flex-column">
-        <form class="uk-flex uk-flex-between">
+        <form class="uk-flex uk-flex-between" method="post" action="@Url.Action("Create", "Home")">
             <div class="uk-flex">
                 <div class="uk-flex uk-flex-middle uk-margin-right">
                     <div class="uk-inline">
@@ -26,28 +26,30 @@
             <div id="modal-adicionar-tarefa" uk-modal>
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-4">
                     <h2 class="uk-modal-title uk-text-bold">Criar Tarefa</h2>
-                    <div class="uk-margin ">
-                        <label class="uk-form-label" for="form-horizontal-text">Tarefa</label>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="descricao">Tarefa</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input fundo-cinza-escuro" id="form-horizontal-text" type="text" placeholder="Insira a tarefa">
+                            <input class="uk-input fundo-cinza-escuro" id="descricao" name="Descricao" type="text"
+                                placeholder="Insira a tarefa" required />
                         </div>
                     </div>
-                    <div class="uk-margin ">
-                        <label class="uk-form-label" for="form-horizontal-text">Data de Vencimento</label>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="dataVencimento">Data de Vencimento</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input fundo-cinza-escuro" id="form-horizontal-text" type="text"
-                                placeholder="Insira a Data de Vencimento">
+                            <input class="uk-input fundo-cinza-escuro" id="dataVencimento" name="DataVencimento"
+                                type="date" placeholder="Insira a Data de Vencimento" required />
                         </div>
                     </div>
                     <p class="uk-text-right" uk-margin>
                         <button class="uk-button uk-button-default uk-modal-close uk-button-small"
                             type="button">Cancelar</button>
                         <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
-                            type="button">Salvar</button>
+                            type="submit">Salvar</button>
                     </p>
                 </div>
             </div>
         </form>
+
         <div style="height:500px; overflow-y:scroll; display: block;">
             <table class="uk-table uk-table-middle uk-table-divider maximo-tabela">
                 <thead>
