@@ -195,16 +195,15 @@
     }
 
     $('#pesquisar').keyup(function () {
-        var text = $(this).val().toLocaleLowerCase();
+        var text = $(this).val().toLowerCase();
         console.log(text);
         $(".linha-tarefa").each(function () {
-            const elemento = $(this)
-            var nome = elemento.text().toLocaleLowerCase();
-            console.log(nome)
+            var nome = $(this).find(".descricao").text().toLowerCase();
+            console.log(nome, text)
             if (!text.includes(nome)) {
-                $(this).hide();
-            } else {
                 $(this).show();
+            } else {
+                $(this).hide();
             }
         });
     });
