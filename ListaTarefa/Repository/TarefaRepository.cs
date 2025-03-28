@@ -36,14 +36,26 @@ namespace ListaTarefa.Repository
             return await _context.Tarefas.FindAsync(id);
         }
 
-         public async Task Delete(int id)
+        public async Task AlternarConcluido(int id)
         {
-            var equipe = await _context.Tarefas.FindAsync(id);
-            if (equipe != null)
+            var tarefa = await _context.Tarefas.FindAsync(id);
+            if (tarefa != null)
             {
-            _context.Tarefas.Remove(equipe);
-            await _context.SaveChangesAsync();
+                tarefa.Concluido = !tarefa.Concluido;
+                _context.Tarefas.Update(tarefa);
+                await _context.SaveChangesAsync();
             }
         }
+
+        public async Task Delete(int id)
+        {
+            var tarefa = await _context.Tarefas.FindAsync(id);
+            if (tarefa != null)
+            {
+                _context.Tarefas.Remove(tarefa);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

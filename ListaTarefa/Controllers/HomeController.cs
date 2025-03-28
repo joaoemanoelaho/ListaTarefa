@@ -21,6 +21,13 @@ public class HomeController : Controller
         var tarefas = await _tarefaRepository.GetAllTarefas(); // Chama o repositório
         return View(tarefas); // Passa as tarefas para a View
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AlternarConcluido(int id)
+    {
+        await _tarefaRepository.AlternarConcluido(id);
+        return Ok();
+    }
     
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
@@ -37,10 +44,9 @@ public class HomeController : Controller
 
         foreach (var tarefa in tarefas)
         {
-            if (descricao == tarefa.Descricao)
+            if (descricao == tarefa.Descricao && tarefa.Concluido == false)
             {
                 return BadRequest("Dados inválidos.");
-
             }
         }
 

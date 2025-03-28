@@ -10,13 +10,17 @@
                 <div class="uk-flex uk-flex-middle uk-margin-right">
                     <div class="uk-inline">
                         <span class="uk-form-icon" uk-search-icon></span>
-                        <input class="uk-input fundo-cinza-escuro" type="text" aria-label="Not clickable icon"
-                            placeholder="Pesquisar tarefas...">
+                        <input class="uk-input fundo-cinza-escuro" id="pesquisar" type="text"
+                            aria-label="Not clickable icon" placeholder="Pesquisar tarefas...">
                     </div>
                 </div>
                 <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid checkbox-filtro">
-                    <label><input class="uk-checkbox" type="checkbox"> Urgente</label>
-                    <label><input class="uk-checkbox" type="checkbox"> Pendente</label>
+                    <label><input class="uk-checkbox" id="urgente" onchange="listarUrgente()" type="checkbox">
+                        Urgente</label>
+                    <label><input class="uk-checkbox" id="pendente" onchange="listarPendente()" type="checkbox">
+                        Pendente</label>
+                    <label><input class="uk-checkbox" id="concluida" onchange="listarConcluida()" type="checkbox">
+                        Concluidos</label>
                 </div>
             </div>
             <p uk-margin>
@@ -66,19 +70,22 @@
                     {
                         foreach (var tarefa in @Model)
                         {
-                            <tr>
-                                <td>
-                                    <label class="checkbox-concluido"><input class="uk-checkbox" type="checkbox"></label>
+
+
+                            <tr class="linha-tarefa" data-concluido="@tarefa.Concluido">
+                                <td class="descricao">
+                                    <label class="checkbox-concluido"><input class="uk-checkbox concluido" data-id="@tarefa.Id"
+                                            @(@tarefa.Concluido ? "checked" : "") type="checkbox"></label>
                                     @tarefa.Descricao
                                 </td>
                                 <td class="uk-text-center">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
                                 </td>
                                 <td>
                                     @{
-                                        var totalDias = (int)(DateTime.Now - @tarefa.DataVencimento.Value).TotalDays;
+                                        var totalDias = (int)(@tarefa.DataVencimento.Value - DateTime.Now).TotalDays;
                                     }
                                     <div class="uk-text-center"><span
-                                            class="uk-badge @(totalDias <= 2 ? "uk-label-danger" : "")">@(totalDias <= 2 ? "Sim"
+                                            class="uk-badge @(totalDias <= 0 ? "uk-label-danger" : "")">@(totalDias <= 0 ? "Sim"
                                                                                 : "Não")</span></div>
                         </td>
                         <td>
@@ -101,7 +108,7 @@
     function dataFormatada(d) {
         var data = new Date(d),
             dia = data.getDate().toString().padStart(2, '0'),
-            mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+            mes = (data.getMonth() + 1).toString().padStart(2, '0'),
             ano = data.getFullYear();
         return [ano, mes, dia].join('-');
     }
@@ -115,8 +122,14 @@
             dataVencimento
         }
 
+        $('.descricao').each(function () {
+            if ($(this).text() == descricao && tarefa.Concluido == true) {
+                console.log("passou aqui")
+            }
+            console.log($(this).text());
+        })
+
         const date = Date.now();
-        console.log(dataFormatada(date), dataVencimento)
 
         if (dataVencimento < dataFormatada(date)) {
             UIkit.notification({
@@ -128,9 +141,6 @@
             return;
         }
 
-        foreach(var tarefa in tarefa) {
-
-        }
 
         $.post('@Url.Action("Create", "Home")', obj)
             .done(function () {
@@ -138,13 +148,83 @@
             })
             .fail(function () {
                 UIkit.notification({
-                    message: 'Erro ao cadastrar time!',
+                    message: 'Erro ao cadastrar tarefa!',
                     status: 'danger',
                     pos: 'top-center',
                     timeout: 1500,
                 });
             });
     }
+
+    function listarPendente() {
+        var isChecked = $("#pendente").is(":checked")
+        $(".linha-tarefa").each(function () {
+            var concluido = $(this).data("concluido");
+            if (isChecked && concluido.toLowerCase() == "true") {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
+    function listarUrgente() {
+        var isChecked = $("#urgente").is(":checked")
+        console.log(isChecked)
+        $(".linha-tarefa").each(function () {
+            var urgente = $(this).find(".uk-label-danger").length == 1;
+            console.log(urgente)
+            if (isChecked && !urgente) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
+    function listarConcluida() {
+        var isChecked = $("#concluida").is(":checked")
+        $(".linha-tarefa").each(function () {
+            var concluido = $(this).data("concluido");
+            if (isChecked && concluido.toLowerCase() == "false") {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
+    $('#pesquisar').keyup(function () {
+        var text = $(this).val().toLocaleLowerCase();
+        console.log(text);
+        $(".linha-tarefa").each(function () {
+            const elemento = $(this)
+            var nome = elemento.text().toLocaleLowerCase();
+            console.log(nome)
+            if (!text.includes(nome)) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('.concluido').click(function () {
+            var botaoClicado = $(this);
+            var id = $(this).data('id');
+
+            $.post('@Url.Action("AlternarConcluido", "Home")', {
+                Id: id
+            }).done(function () {
+                window.location.reload();
+            }).fail(function () {
+                alert('Erro ao alterar botao de concluido!');
+            });
+        });
+    });
+
 
     $(document).ready(function () {
         $('.excluir').click(function () {
@@ -158,7 +238,7 @@
                 linha.remove();
                 window.location.reload();
             }).fail(function () {
-                alert('Erro ao excluir time!');
+                alert('Erro ao excluir tarefa!');
             });
         });
     });
