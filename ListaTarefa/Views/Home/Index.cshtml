@@ -10,7 +10,7 @@
                 <div class="uk-flex uk-flex-middle uk-margin-right">
                     <div class="uk-inline">
                         <span class="uk-form-icon" uk-search-icon></span>
-                        <input class="uk-input fundo-cinza-escuro" id="pesquisar" type="text"
+                        <input class="uk-input fundo-cinza-escuro" id="pesquisar" type="search"
                             aria-label="Not clickable icon" placeholder="Pesquisar tarefas...">
                     </div>
                 </div>
@@ -28,32 +28,33 @@
                     uk-toggle="target: #modal-adicionar-tarefa">Nova Tarefa</button>
             </p>
 
-            <div id="modal-adicionar-tarefa" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-4">
-                    <h2 class="uk-modal-title uk-text-bold">Criar Tarefa</h2>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="descricao">Tarefa</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input fundo-cinza-escuro" id="descricao" name="Descricao" type="text"
-                                placeholder="Insira a tarefa" required />
-                        </div>
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="dataVencimento">Data de Vencimento</label>
-                        <div class="uk-form-controls">
-                            <input class="uk-input fundo-cinza-escuro" id="dataVencimento" name="DataVencimento"
-                                type="date" placeholder="Insira a Data de Vencimento" required />
-                        </div>
-                    </div>
-                    <p class="uk-text-right" uk-margin>
-                        <button class="uk-button uk-button-default uk-modal-close uk-button-small"
-                            type="button">Cancelar</button>
-                        <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
-                            onclick="cadastrar()" type="submit">Salvar</button>
-                    </p>
-                </div>
-            </div>
         </form>
+
+        <div id="modal-adicionar-tarefa" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-4">
+                <h2 class="uk-modal-title uk-text-bold">Criar Tarefa</h2>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="descricao">Tarefa</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input fundo-cinza-escuro" id="descricao" name="descricao" type="text"
+                            placeholder="Insira a tarefa" required />
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="dataVencimento">Data de Vencimento</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input fundo-cinza-escuro" id="dataVencimento" name="dataVencimento"
+                            type="date" placeholder="Insira a Data de Vencimento" required />
+                    </div>
+                </div>
+                <p class="uk-text-right" uk-margin>
+                    <button class="uk-button uk-button-default uk-modal-close uk-button-small"
+                        type="button">Cancelar</button>
+                    <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
+                        onclick="cadastrar()" type="submit">Salvar</button>
+                </p>
+            </div>
+        </div>
 
         <div style="height:500px; overflow-y:scroll; display: block;">
             <table class="uk-table uk-table-middle uk-table-divider maximo-tabela">
@@ -85,7 +86,7 @@
                                         var totalDias = (int)(@tarefa.DataVencimento.Value - DateTime.Now).TotalDays;
                                     }
                                     <div class="uk-text-center"><span
-                                            class="uk-badge @(totalDias <= 0 ? "uk-label-danger" : "")">@(totalDias <= 0 ? "Sim"
+                                            class="uk-badge @(totalDias <= 0 && !@tarefa.Concluido ? "uk-label-danger" : "")">@(totalDias <= 0 && !@tarefa.Concluido ? "Sim"
                                                                                 : "Não")</span></div>
                         </td>
                         <td>
@@ -153,7 +154,7 @@
                     pos: 'top-center',
                     timeout: 1500,
                 });
-            });
+        });
     }
 
     function listarPendente() {
@@ -170,10 +171,8 @@
 
     function listarUrgente() {
         var isChecked = $("#urgente").is(":checked")
-        console.log(isChecked)
         $(".linha-tarefa").each(function () {
             var urgente = $(this).find(".uk-label-danger").length == 1;
-            console.log(urgente)
             if (isChecked && !urgente) {
                 $(this).hide();
             } else {
@@ -195,17 +194,11 @@
     }
 
     $('#pesquisar').keyup(function () {
-        var text = $(this).val().toLowerCase();
-        console.log(text);
-        $(".linha-tarefa").each(function () {
+        var text = $(this).val().toLowerCase().trim();
+         $(".linha-tarefa").show().filter(function (){
             var nome = $(this).find(".descricao").text().toLowerCase();
-            console.log(nome, text)
-            if (!text.includes(nome)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
+            return nome.trim().indexOf(text) == -1;
+         }).hide();
     });
 
 

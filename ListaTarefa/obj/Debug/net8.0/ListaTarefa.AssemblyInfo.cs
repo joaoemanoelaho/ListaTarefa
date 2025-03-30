@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ListaTarefa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c7516e6e8d62b4be45bead94c7748ec517cc37d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eefaa33d0b12a4dc4fa44745851f71f47ea1b683")]
 [assembly: System.Reflection.AssemblyProductAttribute("ListaTarefa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ListaTarefa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

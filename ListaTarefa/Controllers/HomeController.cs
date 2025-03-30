@@ -18,8 +18,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var tarefas = await _tarefaRepository.GetAllTarefas(); // Chama o repositório
-        return View(tarefas); // Passa as tarefas para a View
+        var tarefas = await _tarefaRepository.GetAllTarefas(); 
+        return View(tarefas);
     }
 
     [HttpPost]
@@ -61,12 +61,7 @@ public class HomeController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

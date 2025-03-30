@@ -17,23 +17,16 @@ namespace ListaTarefa.Repository
             _context = context;
         }
 
-        // Método para obter todas as tarefas
+        
         public async Task<List<Tarefa>> GetAllTarefas()
         {
-            return await _context.Tarefas.ToListAsync(); // Retorna todas as tarefas do banco de dados
+            return await _context.Tarefas.ToListAsync(); 
         }
 
-        // Método para adicionar uma nova tarefa
         public async Task AddTarefa(Tarefa tarefa)
         {
             _context.Tarefas.Add(tarefa);
-            await _context.SaveChangesAsync(); // Salva no banco de dados
-        }
-
-        // Método para obter uma tarefa específica
-        public async Task<Tarefa> GetTarefaById(int id)
-        {
-            return await _context.Tarefas.FindAsync(id);
+            await _context.SaveChangesAsync(); 
         }
 
         public async Task AlternarConcluido(int id)
