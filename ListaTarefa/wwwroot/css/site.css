@@ -57,7 +57,7 @@ input[type="checkbox"]:checked {
   background-color: var(--verde);
 }
 
-.botao-lixeira {
+.botao {
   border: 0;
   background-color: transparent;
   color: #204e9d;

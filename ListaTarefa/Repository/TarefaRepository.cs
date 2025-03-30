@@ -17,16 +17,16 @@ namespace ListaTarefa.Repository
             _context = context;
         }
 
-        
+
         public async Task<List<Tarefa>> GetAllTarefas()
         {
-            return await _context.Tarefas.ToListAsync(); 
+            return await _context.Tarefas.ToListAsync();
         }
 
         public async Task AddTarefa(Tarefa tarefa)
         {
             _context.Tarefas.Add(tarefa);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
         }
 
         public async Task AlternarConcluido(int id)
@@ -40,7 +40,19 @@ namespace ListaTarefa.Repository
             }
         }
 
-        public async Task Delete(int id)
+        public async Task Atualizar(int id, string descricao, DateTime dataVencimento)
+        {
+            var tarefa = await _context.Tarefas.FindAsync(id);
+            if (tarefa != null)
+            {
+                tarefa.Descricao = descricao;
+                tarefa.DataVencimento = dataVencimento;
+                _context.Tarefas.Update(tarefa);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Deletar(int id)
         {
             var tarefa = await _context.Tarefas.FindAsync(id);
             if (tarefa != null)

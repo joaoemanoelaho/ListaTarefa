@@ -18,7 +18,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var tarefas = await _tarefaRepository.GetAllTarefas(); 
+        var tarefas = await _tarefaRepository.GetAllTarefas();
         return View(tarefas);
     }
 
@@ -28,11 +28,18 @@ public class HomeController : Controller
         await _tarefaRepository.AlternarConcluido(id);
         return Ok();
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Deletar(int id)
     {
-        await _tarefaRepository.Delete(id);
+        await _tarefaRepository.Deletar(id);
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Atualizar(int id, string descricao, DateTime dataVencimento)
+    {
+        await _tarefaRepository.Atualizar(id, descricao, dataVencimento);
         return Ok();
     }
 
@@ -61,7 +68,7 @@ public class HomeController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

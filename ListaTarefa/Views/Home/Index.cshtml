@@ -69,17 +69,15 @@
                 <tbody>
                     @if (@Model != null && @Model.Any())
                     {
-                        foreach (var tarefa in @Model)
+                        foreach (var tarefa in @Model.OrderBy(t => t.DataVencimento))
                         {
-
-
                             <tr class="linha-tarefa" data-concluido="@tarefa.Concluido">
                                 <td class="descricao">
                                     <label class="checkbox-concluido"><input class="uk-checkbox concluido" data-id="@tarefa.Id"
                                             @(@tarefa.Concluido ? "checked" : "") type="checkbox"></label>
                                     @tarefa.Descricao
                                 </td>
-                                <td class="uk-text-center">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
+                                <td class="uk-text-center dataVencimento">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
                                 </td>
                                 <td>
                                     @{
@@ -89,14 +87,43 @@
                                             class="uk-badge @(totalDias <= 0 && !@tarefa.Concluido ? "uk-label-danger" : "")">@(totalDias <= 0 && !@tarefa.Concluido ? "Sim"
                                                                                 : "Não")</span></div>
                         </td>
-                        <td>
-                            <div class="uk-text-right "><button class="botao-lixeira excluir" data-id="@tarefa.Id"
-                                    type="button" uk-icon="trash"></button>
-                            </div>
+                        <td class="uk-flex uk-flex-right">
+                                <div class="uk-text-right uk-margin-right"><button class="botao editar" data-id="@tarefa.Id"
+                                        type="button" uk-toggle="target: #modal-atualizar-tarefa" uk-icon="file-edit"></button>
+                                </div>
+                                <div class="uk-text-right "><button class="botao excluir" data-id="@tarefa.Id"
+                                        type="button" uk-icon="trash"></button>
+                                </div>
                         </td>
                     </tr>
                                         }
                     }
+
+            <div id="modal-atualizar-tarefa" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-4">
+                    <h2 class="uk-modal-title uk-text-bold">Editar Tarefa</h2>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="descricaoEditar">Tarefa</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input fundo-cinza-escuro" id="descricaoEditar" name="descricao" type="text"
+                                placeholder="Insira a tarefa" required />
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="dataVencimentoEditar">Data de Vencimento</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input fundo-cinza-escuro" id="dataVencimentoEditar" name="dataVencimento"
+                                type="date" placeholder="Insira a Data de Vencimento" required />
+                        </div>
+                    </div>
+                    <p class="uk-text-right" uk-margin>
+                        <button class="uk-button uk-button-default uk-modal-close uk-button-small"
+                            type="button">Cancelar</button>
+                        <button class="uk-button fundo-azul-escuro uk-button-small cor-texto-branco"
+                            onclick="editar()" type="submit">Salvar</button>
+                    </p>
+                </div>
+            </div>
 
                 </tbody>
             </table>
@@ -204,7 +231,6 @@
 
     $(document).ready(function () {
         $('.concluido').click(function () {
-            var botaoClicado = $(this);
             var id = $(this).data('id');
 
             $.post('@Url.Action("AlternarConcluido", "Home")', {
@@ -224,7 +250,7 @@
             var id = $(this).data('id');
             var linha = $(this).closest('tr');
 
-            $.post('@Url.Action("Delete", "Home")', {
+            $.post('@Url.Action("Deletar", "Home")', {
                 Id: id
             }).done(function () {
                 linha.remove();
@@ -234,4 +260,62 @@
             });
         });
     });
+
+    function converterDataParaAmericano(dataBr) {
+        var partes = dataBr.split('/');
+        if (partes.length !== 3) return '';
+        var dia = partes[0].padStart(2, '0');
+        var mes = partes[1].padStart(2, '0');
+        var ano = partes[2];
+        return ano + '-' + mes + '-' + dia;
+    }
+
+    $(document).ready(function () {
+            $('.editar').click(function () {
+                id = $(this).data('id'); 
+                var linha = $(this).closest('tr'); 
+                console.log(linha)
+                var descricao = $(linha).find(".descricao").text().trim();
+                var dataVencimento = $(linha).find(".dataVencimento").text().trim();
+                
+                $('#descricaoEditar').val(descricao);
+                $('#dataVencimentoEditar').val(converterDataParaAmericano(dataVencimento));
+            });
+    });
+
+    function editar() {
+        var descricao = $('#descricaoEditar').val();
+        var dataVencimento = $('#dataVencimentoEditar').val();
+
+        $('.descricao').each(function () {
+            if ($(this).text() == descricao && tarefa.Concluido == true) {
+                console.log("passou aqui")
+            }
+            console.log($(this).text());
+        })
+
+        const date = Date.now();
+
+        if (dataVencimento < dataFormatada(date)) {
+            UIkit.notification({
+                message: 'Erro: data inválida!',
+                status: 'danger',
+                pos: 'top-center',
+                timeout: 1500,
+            });
+            return;
+        }
+
+        $.post('@Url.Action("Atualizar", "Home")', {
+                Id: id,
+                Descricao: descricao,
+                DataVencimento: dataVencimento
+            }).done(function () {
+                window.location.reload();
+            }).fail(function () {
+                alert('Erro ao excluir tarefa!');
+            });
+    }
+
+    
 </script>
