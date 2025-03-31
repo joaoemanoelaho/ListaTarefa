@@ -15,11 +15,11 @@
                     </div>
                 </div>
                 <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid checkbox-filtro">
-                    <label><input class="uk-checkbox" id="urgente" onchange="listarUrgente()" type="checkbox">
+                    <label><input class="uk-checkbox" name="entrada" id="urgente" onchange="listarUrgente(), marcaDesmarca(this.id)" type="checkbox">
                         Urgente</label>
-                    <label><input class="uk-checkbox" id="pendente" onchange="listarPendente()" type="checkbox">
+                    <label><input class="uk-checkbox" name="entrada" id="pendente" onchange="listarPendente(), marcaDesmarca(this.id)" type="checkbox">
                         Pendente</label>
-                    <label><input class="uk-checkbox" id="concluida" onchange="listarConcluida()" type="checkbox">
+                    <label><input class="uk-checkbox" name="entrada" id="concluida" onchange="listarConcluida(), marcaDesmarca(this.id)" type="checkbox">
                         Concluidos</label>
                 </div>
             </div>
@@ -140,6 +140,23 @@
         return [ano, mes, dia].join('-');
     }
 
+    const urgente = document.getElementById('urgente');
+    const pendente = document.getElementById('pendente');
+    const concluido = document.getElementById('concluida');
+
+    function marcaDesmarca(id) {
+    if (id == "urgente") {
+        document.getElementById('pendente').checked = false;
+        document.getElementById('concluida').checked = false;
+    } else if (id == "pendente") {
+        document.getElementById('urgente').checked = false;
+        document.getElementById('concluida').checked = false;
+    } else if (id == "concluida") {
+        document.getElementById('urgente').checked = false;
+        document.getElementById('pendente').checked = false;
+    }
+    }
+
     function cadastrar() {
         const descricao = $('#descricao').val();
         const dataVencimento = $('#dataVencimento').val();
@@ -180,6 +197,7 @@
         const verificado = $("#pendente").is(":checked")
         $(".linha-tarefa").each(function () {
             let concluido = $(this).data("concluido");
+
             if (verificado && concluido.toLowerCase() == "true") {
                 $(this).hide();
             } else {
