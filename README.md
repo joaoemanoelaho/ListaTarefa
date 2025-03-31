@@ -21,12 +21,29 @@ Este projeto é uma aplicação web construída com ASP.NET MVC para gerenciamen
 git clone https://github.com/joaoemanoelaho/ListaTarefa/
 ```
 
-2. **Acesse o diretório do projeto:**
+2. **Configurar a string de conexão:**
+- No arquivo appsettings.json, defina a string de conexão na seção ConnectionStrings:
+```
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "server=SEU_SERVIDOR\\SQLEXPRESS; database=ListaDeTarefa; trusted_connection=true; trustservercertificate=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+```
+  
+3. **Acesse o diretório do projeto:**
 ```bash
 cd ListaTarefa
 ```
 
-3. **Execute o projeto:**
+4. **Execute o projeto:**
 ```bash
 dotnet run
 ```
