@@ -39,6 +39,18 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Atualizar(int id, string descricao, DateTime dataVencimento)
     {
+        var tarefas = await _tarefaRepository.GetAllTarefas();
+
+        foreach (var tarefa in tarefas)
+        {
+            if (descricao == tarefa.Descricao && tarefa.Concluido == false)
+            {
+                if(id != tarefa.Id){
+                    return BadRequest("Dados inválidos."); 
+                }
+            }
+        }
+        
         await _tarefaRepository.Atualizar(id, descricao, dataVencimento);
         return Ok();
     }

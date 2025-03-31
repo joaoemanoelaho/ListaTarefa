@@ -56,14 +56,14 @@
             </div>
         </div>
 
-        <div style="height:500px; overflow-y:scroll; display: block;">
-            <table class="uk-table uk-table-middle uk-table-divider maximo-tabela">
+        <div style="height:500px; overflow-y:auto; display: block; ">
+            <table class="uk-table uk-table-middle uk-table-divider ">
                 <thead>
                     <tr>
-                        <th class="uk-width-medium">Tarefa</th>
+                        <th class="uk-width-medium;">Tarefa</th>
                         <th class="uk-text-center uk-width-medium">Data Vencimento</th>
                         <th class="uk-text-center uk-width-medium">Urgente</th>
-                        <th class="uk-width-medium"></th>
+                        <th class="uk-text-center uk-width-medium"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,8 +77,7 @@
                                             @(@tarefa.Concluido ? "checked" : "") type="checkbox"></label>
                                     @tarefa.Descricao
                                 </td>
-                                <td class="uk-text-center dataVencimento">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")
-                                </td>
+                                <td class="uk-text-center dataVencimento">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     @{
                                         var totalDias = (int)(@tarefa.DataVencimento.Value - DateTime.Now).TotalDays;
@@ -86,7 +85,7 @@
                                     <div class="uk-text-center"><span
                                             class="uk-badge @(totalDias <= 0 && !@tarefa.Concluido ? "uk-label-danger" : "")">@(totalDias <= 0 && !@tarefa.Concluido ? "Sim"
                                                                                 : "Não")</span></div>
-                        </td>
+                                </td>
                         <td class="uk-flex uk-flex-right">
                                 <div class="uk-text-right uk-margin-right"><button class="botao editar" data-id="@tarefa.Id"
                                         type="button" uk-toggle="target: #modal-atualizar-tarefa" uk-icon="file-edit"></button>
@@ -134,7 +133,7 @@
 <script>
 
     function dataFormatada(d) {
-        var data = new Date(d),
+        const data = new Date(d),
             dia = data.getDate().toString().padStart(2, '0'),
             mes = (data.getMonth() + 1).toString().padStart(2, '0'),
             ano = data.getFullYear();
@@ -142,20 +141,13 @@
     }
 
     function cadastrar() {
-        var descricao = $('#descricao').val();
-        var dataVencimento = $('#dataVencimento').val();
+        const descricao = $('#descricao').val();
+        const dataVencimento = $('#dataVencimento').val();
 
         const obj = {
             descricao,
             dataVencimento
         }
-
-        $('.descricao').each(function () {
-            if ($(this).text() == descricao && tarefa.Concluido == true) {
-                console.log("passou aqui")
-            }
-            console.log($(this).text());
-        })
 
         const date = Date.now();
 
@@ -185,10 +177,10 @@
     }
 
     function listarPendente() {
-        var isChecked = $("#pendente").is(":checked")
+        const verificado = $("#pendente").is(":checked")
         $(".linha-tarefa").each(function () {
-            var concluido = $(this).data("concluido");
-            if (isChecked && concluido.toLowerCase() == "true") {
+            let concluido = $(this).data("concluido");
+            if (verificado && concluido.toLowerCase() == "true") {
                 $(this).hide();
             } else {
                 $(this).show();
@@ -197,10 +189,10 @@
     }
 
     function listarUrgente() {
-        var isChecked = $("#urgente").is(":checked")
+        const verificado = $("#urgente").is(":checked")
         $(".linha-tarefa").each(function () {
-            var urgente = $(this).find(".uk-label-danger").length == 1;
-            if (isChecked && !urgente) {
+            let urgente = $(this).find(".uk-label-danger").length == 1;
+            if (verificado && !urgente) {
                 $(this).hide();
             } else {
                 $(this).show();
@@ -209,10 +201,10 @@
     }
 
     function listarConcluida() {
-        var isChecked = $("#concluida").is(":checked")
+        const verificado = $("#concluida").is(":checked")
         $(".linha-tarefa").each(function () {
-            var concluido = $(this).data("concluido");
-            if (isChecked && concluido.toLowerCase() == "false") {
+            let concluido = $(this).data("concluido");
+            if (verificado && concluido.toLowerCase() == "false") {
                 $(this).hide();
             } else {
                 $(this).show();
@@ -221,9 +213,9 @@
     }
 
     $('#pesquisar').keyup(function () {
-        var text = $(this).val().toLowerCase().trim();
+        const text = $(this).val().toLowerCase().trim();
          $(".linha-tarefa").show().filter(function (){
-            var nome = $(this).find(".descricao").text().toLowerCase();
+            let nome = $(this).find(".descricao").text().toLowerCase();
             return nome.trim().indexOf(text) == -1;
          }).hide();
     });
@@ -231,7 +223,7 @@
 
     $(document).ready(function () {
         $('.concluido').click(function () {
-            var id = $(this).data('id');
+            const id = $(this).data('id');
 
             $.post('@Url.Action("AlternarConcluido", "Home")', {
                 Id: id
@@ -246,9 +238,8 @@
 
     $(document).ready(function () {
         $('.excluir').click(function () {
-            var botaoClicado = $(this);
-            var id = $(this).data('id');
-            var linha = $(this).closest('tr');
+            const id = $(this).data('id');
+            const linha = $(this).closest('tr');
 
             $.post('@Url.Action("Deletar", "Home")', {
                 Id: id
@@ -262,21 +253,22 @@
     });
 
     function converterDataParaAmericano(dataBr) {
-        var partes = dataBr.split('/');
+        const partes = dataBr.split('/');
         if (partes.length !== 3) return '';
-        var dia = partes[0].padStart(2, '0');
-        var mes = partes[1].padStart(2, '0');
-        var ano = partes[2];
+        const dia = partes[0].padStart(2, '0');
+        const mes = partes[1].padStart(2, '0');
+        const ano = partes[2];
         return ano + '-' + mes + '-' + dia;
     }
 
+    let idTarefa = null;
     $(document).ready(function () {
             $('.editar').click(function () {
-                id = $(this).data('id'); 
-                var linha = $(this).closest('tr'); 
+                idTarefa = $(this).data('id'); 
+                const linha = $(this).closest('tr'); 
                 console.log(linha)
-                var descricao = $(linha).find(".descricao").text().trim();
-                var dataVencimento = $(linha).find(".dataVencimento").text().trim();
+                const descricao = $(linha).find(".descricao").text().trim();
+                const dataVencimento = $(linha).find(".dataVencimento").text().trim();
                 
                 $('#descricaoEditar').val(descricao);
                 $('#dataVencimentoEditar').val(converterDataParaAmericano(dataVencimento));
@@ -284,15 +276,8 @@
     });
 
     function editar() {
-        var descricao = $('#descricaoEditar').val();
-        var dataVencimento = $('#dataVencimentoEditar').val();
-
-        $('.descricao').each(function () {
-            if ($(this).text() == descricao && tarefa.Concluido == true) {
-                console.log("passou aqui")
-            }
-            console.log($(this).text());
-        })
+        const descricao = $('#descricaoEditar').val();
+        const dataVencimento = $('#dataVencimentoEditar').val();
 
         const date = Date.now();
 
@@ -307,13 +292,18 @@
         }
 
         $.post('@Url.Action("Atualizar", "Home")', {
-                Id: id,
+                Id: idTarefa,
                 Descricao: descricao,
                 DataVencimento: dataVencimento
             }).done(function () {
                 window.location.reload();
             }).fail(function () {
-                alert('Erro ao excluir tarefa!');
+                UIkit.notification({
+                message: 'Erro ao atualizar tarefa!',
+                status: 'danger',
+                pos: 'top-center',
+                timeout: 1500,
+            });
             });
     }
 
