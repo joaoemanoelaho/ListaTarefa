@@ -40,13 +40,25 @@ namespace ListaTarefa.Repository
             }
         }
 
-        public async Task Atualizar(int id, string descricao, DateTime dataVencimento)
+        public async Task AlternarStatus(int id)
+        {
+            var tarefa = await _context.Tarefas.FindAsync(id);
+            if (tarefa != null)
+            {
+                tarefa.Status = !tarefa.Status;
+                _context.Tarefas.Update(tarefa);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Atualizar(int id, string descricao, DateTime dataVencimento, bool status)
         {
             var tarefa = await _context.Tarefas.FindAsync(id);
             if (tarefa != null)
             {
                 tarefa.Descricao = descricao;
                 tarefa.DataVencimento = dataVencimento;
+                tarefa.Status = status;
                 _context.Tarefas.Update(tarefa);
                 await _context.SaveChangesAsync();
             }

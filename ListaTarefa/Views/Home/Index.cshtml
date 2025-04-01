@@ -10,7 +10,7 @@
                 <div class="uk-flex uk-flex-middle uk-margin-right">
                     <div class="uk-inline">
                         <span class="uk-form-icon" uk-search-icon></span>
-                        <input class="uk-input fundo-cinza-escuro" id="pesquisar" type="search"
+                        <input class="uk-input fundo-cinza-escuro pesquisar" id="" type="search"
                             aria-label="Not clickable icon" placeholder="Pesquisar tarefas...">
                     </div>
                 </div>
@@ -47,6 +47,10 @@
                             type="date" placeholder="Insira a Data de Vencimento" required />
                     </div>
                 </div>
+                <div>
+                    <label class="checkbox-concluido"><input class="uk-checkbox status" type="checkbox"></label>
+                    Urgência
+                </div>
                 <p class="uk-text-right" uk-margin>
                     <button class="uk-button uk-button-default uk-modal-close uk-button-small"
                         type="button">Cancelar</button>
@@ -62,7 +66,7 @@
                     <tr>
                         <th class="uk-width-medium;">Tarefa</th>
                         <th class="uk-text-center uk-width-medium">Data Vencimento</th>
-                        <th class="uk-text-center uk-width-medium">Urgente</th>
+                        <th class="uk-text-center uk-width-medium">Status</th>
                         <th class="uk-text-center uk-width-medium"></th>
                     </tr>
                 </thead>
@@ -71,22 +75,22 @@
                     {
                         foreach (var tarefa in @Model.OrderBy(t => t.DataVencimento))
                         {
-                            <tr class="linha-tarefa" data-concluido="@tarefa.Concluido">
-                                <td class="descricao">
+                            <tr class="linha-tarefa @(@tarefa.Concluido == true ? "backgroud-cor-verde-claro" : "")" data-concluido="@tarefa.Concluido">
+                                <td class="descricao pesquisarInput">
                                     <label class="checkbox-concluido"><input class="uk-checkbox concluido" data-id="@tarefa.Id"
                                             @(@tarefa.Concluido ? "checked" : "") type="checkbox"></label>
                                     @tarefa.Descricao
                                 </td>
-                                <td class="uk-text-center dataVencimento">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")</td>
+                                <td class="uk-text-center dataVencimento pesquisarInput">@tarefa.DataVencimento.Value.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     @{
                                         var totalDias = (int)(@tarefa.DataVencimento.Value - DateTime.Now).TotalDays;
                                     }
                                     <div class="uk-text-center"><span
-                                            class="uk-badge @(totalDias <= 0 && !@tarefa.Concluido ? "uk-label-danger" : "")">@(totalDias <= 0 && !@tarefa.Concluido ? "Sim"
+                                            class="uk-badge @(@tarefa.Status ? "uk-label-danger" : "") statusPalavra">@(@tarefa.Status ? "Sim"
                                                                                 : "Não")</span></div>
                                 </td>
-                        <td class="uk-flex uk-flex-right">
+                                <td class="uk-flex uk-flex-right">
                                 <div class="uk-text-right uk-margin-right"><button class="botao editar" data-id="@tarefa.Id"
                                         type="button" uk-toggle="target: #modal-atualizar-tarefa" uk-icon="file-edit"></button>
                                 </div>
@@ -114,6 +118,10 @@
                             <input class="uk-input fundo-cinza-escuro" id="dataVencimentoEditar" name="dataVencimento"
                                 type="date" placeholder="Insira a Data de Vencimento" required />
                         </div>
+                    </div>
+                    <div>
+                        <label class="checkbox-concluido"><input class="uk-checkbox" id="statusEditar" type="checkbox"></label>
+                        Urgência
                     </div>
                     <p class="uk-text-right" uk-margin>
                         <button class="uk-button uk-button-default uk-modal-close uk-button-small"
@@ -145,25 +153,31 @@
     const concluido = document.getElementById('concluida');
 
     function marcaDesmarca(id) {
-    if (id == "urgente") {
-        document.getElementById('pendente').checked = false;
-        document.getElementById('concluida').checked = false;
-    } else if (id == "pendente") {
-        document.getElementById('urgente').checked = false;
-        document.getElementById('concluida').checked = false;
-    } else if (id == "concluida") {
-        document.getElementById('urgente').checked = false;
-        document.getElementById('pendente').checked = false;
+        if (id == "urgente") {
+            document.getElementById('pendente').checked = false;
+            document.getElementById('concluida').checked = false;
+        } else if (id == "pendente") {
+            document.getElementById('urgente').checked = false;
+            document.getElementById('concluida').checked = false;
+        } else if (id == "concluida") {
+            document.getElementById('urgente').checked = false;
+            document.getElementById('pendente').checked = false;
+        }
     }
-    }
+
+        
+
 
     function cadastrar() {
         const descricao = $('#descricao').val();
         const dataVencimento = $('#dataVencimento').val();
+        const status = $('.status').is(":checked")
+        console.log(status)
 
         const obj = {
             descricao,
-            dataVencimento
+            dataVencimento,
+            status
         }
 
         const date = Date.now();
@@ -230,13 +244,14 @@
         });
     }
 
-    $('#pesquisar').keyup(function () {
+    $('.pesquisar').keyup(function () {
         const text = $(this).val().toLowerCase().trim();
          $(".linha-tarefa").show().filter(function (){
-            let nome = $(this).find(".descricao").text().toLowerCase();
-            return nome.trim().indexOf(text) == -1;
+            let nome = $(this).find(".pesquisarInput").text().toLowerCase();
+            return nome.trim().indexOf(text) == -1 ;
          }).hide();
     });
+
 
 
     $(document).ready(function () {
@@ -252,6 +267,8 @@
             });
         });
     });
+
+    
 
 
     $(document).ready(function () {
@@ -284,18 +301,28 @@
             $('.editar').click(function () {
                 idTarefa = $(this).data('id'); 
                 const linha = $(this).closest('tr'); 
-                console.log(linha)
                 const descricao = $(linha).find(".descricao").text().trim();
                 const dataVencimento = $(linha).find(".dataVencimento").text().trim();
+                const status = $(linha).find(".statusPalavra").text().trim();
+                if (status == "Não"){
+                    $('#descricaoEditar').val(descricao);
+                    $('#dataVencimentoEditar').val(converterDataParaAmericano(dataVencimento));
+                    $('#statusEditar').prop('checked', false);
+
+                } else if (status == "Sim"){
+                    $('#descricaoEditar').val(descricao);
+                    $('#dataVencimentoEditar').val(converterDataParaAmericano(dataVencimento));
+                    $('#statusEditar').prop('checked', true);
+                }
                 
-                $('#descricaoEditar').val(descricao);
-                $('#dataVencimentoEditar').val(converterDataParaAmericano(dataVencimento));
             });
     });
 
     function editar() {
         const descricao = $('#descricaoEditar').val();
         const dataVencimento = $('#dataVencimentoEditar').val();
+        const status = $('#statusEditar').is(":checked");
+        console.log(status)
 
         const date = Date.now();
 
@@ -312,7 +339,8 @@
         $.post('@Url.Action("Atualizar", "Home")', {
                 Id: idTarefa,
                 Descricao: descricao,
-                DataVencimento: dataVencimento
+                DataVencimento: dataVencimento,
+                Status: status
             }).done(function () {
                 window.location.reload();
             }).fail(function () {

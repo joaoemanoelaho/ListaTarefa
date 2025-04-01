@@ -88,3 +88,7 @@ thead th {
   background-color: white;
   z-index: 1;
 }
+
+.backgroud-cor-verde-claro {
+  background-color: rgba(10, 207, 10, 0.534);
+}

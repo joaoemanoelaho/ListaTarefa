@@ -30,6 +30,13 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> AlternarStatus(int id)
+    {
+        await _tarefaRepository.AlternarStatus(id);
+        return Ok();
+    }
+
+    [HttpPost]
     public async Task<IActionResult> Deletar(int id)
     {
         await _tarefaRepository.Deletar(id);
@@ -37,7 +44,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Atualizar(int id, string descricao, DateTime dataVencimento)
+    public async Task<IActionResult> Atualizar(int id, string descricao, DateTime dataVencimento, bool status)
     {
         var tarefas = await _tarefaRepository.GetAllTarefas();
 
@@ -45,18 +52,19 @@ public class HomeController : Controller
         {
             if (descricao == tarefa.Descricao && tarefa.Concluido == false)
             {
-                if(id != tarefa.Id){
-                    return BadRequest("Dados inválidos."); 
+                if (id != tarefa.Id)
+                {
+                    return BadRequest("Dados inválidos.");
                 }
             }
         }
-        
-        await _tarefaRepository.Atualizar(id, descricao, dataVencimento);
+
+        await _tarefaRepository.Atualizar(id, descricao, dataVencimento, status);
         return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string descricao, DateTime dataVencimento)
+    public async Task<IActionResult> Create(string descricao, DateTime dataVencimento, bool status)
     {
 
         var tarefas = await _tarefaRepository.GetAllTarefas();
@@ -73,7 +81,8 @@ public class HomeController : Controller
         {
             Descricao = descricao,
             DataVencimento = dataVencimento,
-            Concluido = false
+            Concluido = false,
+            Status = status
         };
 
         await _tarefaRepository.AddTarefa(novaTarefa);

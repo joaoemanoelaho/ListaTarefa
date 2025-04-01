@@ -16,5 +16,6 @@ namespace ListaTarefa.Models
         [Required(ErrorMessage = "Preencha a data de vencimento!")]
         public DateTime? DataVencimento { get; set; }
         public bool Concluido { get; set; } = false;
+        public bool Status { get; set; } = false;
     }
 }
