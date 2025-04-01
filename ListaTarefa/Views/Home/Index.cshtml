@@ -139,7 +139,6 @@
 </div>
 
 <script>
-
     function dataFormatada(d) {
         const data = new Date(d),
             dia = data.getDate().toString().padStart(2, '0'),
@@ -165,14 +164,10 @@
         }
     }
 
-        
-
-
     function cadastrar() {
         const descricao = $('#descricao').val();
         const dataVencimento = $('#dataVencimento').val();
         const status = $('.status').is(":checked")
-        console.log(status)
 
         const obj = {
             descricao,
@@ -191,7 +186,6 @@
             });
             return;
         }
-
 
         $.post('@Url.Action("Create", "Home")', obj)
             .done(function () {
@@ -252,8 +246,6 @@
          }).hide();
     });
 
-
-
     $(document).ready(function () {
         $('.concluido').click(function () {
             const id = $(this).data('id');
@@ -267,9 +259,6 @@
             });
         });
     });
-
-    
-
 
     $(document).ready(function () {
         $('.excluir').click(function () {
@@ -351,7 +340,5 @@
                 timeout: 1500,
             });
             });
-    }
-
-    
+    }    
 </script>
